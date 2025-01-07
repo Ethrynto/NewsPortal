@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using API.Models;
+using Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    // public DbSet<Game> Games { get; set; }
+    public DbSet<User> Users { get; set; }
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
@@ -13,7 +15,7 @@ public class ApplicationDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }
