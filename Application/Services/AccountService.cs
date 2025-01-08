@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Repositories;
+﻿using Domain.Abstractions.Repositories;
 
 namespace Application.Services;
 
