@@ -1,5 +1,5 @@
-﻿using API.Models;
-using Application.Abstractions.Repositories;
+﻿using Domain.Models;
+using Domain.Abstractions.Repositories;
 using Application.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,9 +7,16 @@ namespace Infrastructure.Repositories;
 
 public class AccountRepository(ApplicationDbContext context) : IAccountRepository
 {
-    public void Add(string username, string email, string password)
+    public async Task<bool> Add(Account account)
     {
-        throw new NotImplementedException();
+        context.Users.Add(new User()
+        {
+            Id = account.Id,
+            Username = account.Username,
+            Email = account.Email,
+            Password = account.PasswordHash
+        });
+        return await context.SaveChangesAsync() > 0;
     }
 
     public async Task<Account> GetById(Guid id)
