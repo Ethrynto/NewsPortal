@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Abstractions.Repositories;
-using Application.Exceptions;
+using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
@@ -9,14 +9,22 @@ public class AccountRepository(ApplicationDbContext context) : IAccountRepositor
 {
     public async Task<bool> Add(Account account)
     {
-        context.Users.Add(new User()
+        try
         {
-            Id = account.Id,
-            Username = account.Username,
-            Email = account.Email,
-            Password = account.PasswordHash
-        });
-        return await context.SaveChangesAsync() > 0;
+            context.Users.Add(new User()
+            {
+                Id = account.Id,
+                Username = account.Username,
+                Email = account.Email,
+                Password = account.PasswordHash
+            });
+            return await context.SaveChangesAsync() > 0;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Error while adding account");
+        }
     }
 
     public async Task<Account> GetById(Guid id)
@@ -38,7 +46,7 @@ public class AccountRepository(ApplicationDbContext context) : IAccountRepositor
         throw new NotFoundException();
     }
 
-    public Task<Account> GetByUsername(string username)
+    public async Task<Account> GetByUsername(string username)
     {
         throw new NotImplementedException();
     }
