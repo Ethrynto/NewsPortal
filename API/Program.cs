@@ -1,3 +1,4 @@
+using Application;
 using Application.Services;
 using Domain.Abstractions.Repositories;
 using Domain.Abstractions.Services;
@@ -14,6 +15,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<JwtService>();
+builder.Services.Configure<AuthSettings>(
+    builder.Configuration.GetSection("AuthSettings"));
 
 
 builder.Services.AddEndpointsApiExplorer();
