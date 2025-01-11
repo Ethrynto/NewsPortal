@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Application.Services;
 
-public class AccountService(IAccountRepository accountRepository) : IAccountService
+public class AccountService(IAccountRepository accountRepository, JwtService jwtService) : IAccountService
 {
     public async Task<bool> Register(string username, string email, string password)
     {
@@ -20,7 +20,7 @@ public class AccountService(IAccountRepository accountRepository) : IAccountServ
         return await accountRepository.Add(account);
     }
     
-    public async Task<bool> Login(string username, string password)
+    public async Task<string> Login(string username, string password)
     {
         Account account = await accountRepository.GetByUsername(username);
         var isCorrect = new PasswordHasher<Account>().
@@ -28,12 +28,11 @@ public class AccountService(IAccountRepository accountRepository) : IAccountServ
 
         if (isCorrect == PasswordVerificationResult.Success)
         {
-            // Generate token
+            return jwtService.GenerateToken(account);
         }
         else
         {
             throw new InvalidPasswordException();
         }
-        return isCorrect > 0;
     }
 }
