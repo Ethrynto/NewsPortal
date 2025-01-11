@@ -48,6 +48,20 @@ public class AccountRepository(ApplicationDbContext context) : IAccountRepositor
 
     public async Task<Account> GetByUsername(string username)
     {
-        throw new NotImplementedException();
+        var user = await context.Users
+            .Where (u => u.Username == username)
+            .AsNoTracking()
+            .FirstOrDefaultAsync();
+
+        if (user != null)
+            return new Account()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.Username,
+                PasswordHash = user.Password,
+            };
+        
+        throw new NotFoundException();
     }
 }
