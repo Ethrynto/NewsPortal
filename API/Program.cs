@@ -41,6 +41,7 @@ var app = builder.Build();
 // app.UseHttpsRedirection();
 app.UseRouting();
 
+app.MapGet("/", () => { return Results.Redirect("/swagger"); });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -49,7 +50,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapGet("/", () => "Hello World!");
 
 app.MapControllers();
 
