@@ -4,6 +4,8 @@ using Domain.Abstractions.Repositories;
 using Domain.Abstractions.Services;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.Configure<AuthSettings>(
     builder.Configuration.GetSection("AuthSettings"));
+builder.Services.AddAuth(builder.Configuration);
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -52,6 +55,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>(); 
 logger.LogInformation("Application started");
