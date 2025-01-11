@@ -41,7 +41,7 @@ var app = builder.Build();
 // app.UseHttpsRedirection();
 app.UseRouting();
 
-app.MapGet("/", () => { return Results.Redirect("/swagger"); });
+app.MapGet("/", () => Results.Redirect("/swagger") );
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
