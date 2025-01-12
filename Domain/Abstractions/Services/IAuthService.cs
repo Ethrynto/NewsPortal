@@ -1,8 +1,8 @@
 ﻿namespace Domain.Abstractions.Services;
 
-public interface IAccountService
+public interface IAuthService
 {
-    Task<bool> Register(string username, string email, string password);
+    Task Register(string username, string email, string password);
     Task<string> Login(string username, string password);
     
 }
