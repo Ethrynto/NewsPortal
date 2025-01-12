@@ -5,4 +5,5 @@ public class Category
 {
     public Guid Id { get; set; }
     public required string Title { get; set; }
+    public IEnumerable<Post>? Posts { get; set; }
 }
