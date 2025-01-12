@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,12 +13,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).ValueGeneratedOnAdd();
         
-        builder.Property(user => user.Username)
+        builder.Property(e => e.Username)
             .IsRequired()
             .HasMaxLength(100);
-        builder.Property(user => user.Email)
+        builder.Property(e => e.Email)
             .IsRequired()
             .HasMaxLength(100);
+        
+        builder.HasMany<Comment>(e => e.Comments)
+            .WithOne(e => e.User)
+            .HasForeignKey(e => e.UserId);
         
     }
 }
