@@ -8,6 +8,7 @@ public class User
     public required string? Password { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public IEnumerable<Comment>? Comments { get; set; }
     public DateTime? VerifiedAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
