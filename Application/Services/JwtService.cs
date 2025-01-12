@@ -9,13 +9,14 @@ namespace Application.Services;
 
 public class JwtService(IOptions<AuthSettings> options)
 {
-    public string GenerateToken(Account account)
+    public string GenerateToken(User user)
     {
         var claims = new List<Claim>
         {
-            new Claim("id", account.Id.ToString()),
-            new Claim("username", account.Username),
-            new Claim("email", account.Email),
+            new Claim("id", user.Id.ToString()),
+            new Claim("username", user.Username),
+            new Claim("email", user.Email),
+            new Claim("role", user.Role),
         };
         var jwtToken = new JwtSecurityToken(
             expires: DateTime.UtcNow.Add(options.Value.Expires),
