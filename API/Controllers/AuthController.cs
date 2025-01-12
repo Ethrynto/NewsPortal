@@ -8,26 +8,25 @@ namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController(IAccountService accountService, ILogger<AuthController> logger)
+public class AuthController(IAuthService authService, ILogger<AuthController> logger)
     : ControllerBase
 {
     private readonly ILogger<AuthController> _logger = logger;
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginAccountRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
-        return Ok(await accountService.Login(request.Username, request.Password));
+        return Ok(await authService.Login(request.Username, request.Password));
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterAccountRequest request)
+    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
     {
-        
         try
         {
-            await accountService.Register(request.Username, request.Email, request.Password);
+            await authService.Register(request.Username, request.Email, request.Password);
             _logger.LogInformation("The user {Username} successfully registered", request.Username);
-            return Ok();
+            return Ok(await authService.Login(request.Username, request.Password));
         }
         catch (Exception ex)
         {
