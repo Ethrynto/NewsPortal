@@ -16,6 +16,8 @@ public static class AuthExtensions
                 {
                     var authSettings = configuration.GetSection("AuthSettings")
                         .Get<AuthSettings>();
+                    if (authSettings is null || authSettings.SecurityKey is null)
+                        throw new ArgumentNullException(nameof(authSettings));
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = false,
