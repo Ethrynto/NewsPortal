@@ -26,7 +26,7 @@ public class AuthService(IAuthRepository authRepository, JwtService jwtService) 
     {
         User user = await authRepository.GetByUsername(username);
         var isCorrect = new PasswordHasher<User>().
-            VerifyHashedPassword(user, user.PasswordHash, password);
+            VerifyHashedPassword(user, user.PasswordHash!, password);
 
         if (isCorrect == PasswordVerificationResult.Success)
         {
