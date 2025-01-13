@@ -22,6 +22,8 @@ builder.Services.Configure<AuthSettings>(
     builder.Configuration.GetSection("AuthSettings"));
 builder.Services.AddAuth(builder.Configuration);
 
+builder.Services.AddScoped<IMediafilesRepository, MediafilesRepository>();
+builder.Services.AddScoped<IMediafilesService, MediafilesService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
