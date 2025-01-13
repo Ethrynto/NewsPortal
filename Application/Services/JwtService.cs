@@ -16,14 +16,14 @@ public class JwtService(IOptions<AuthSettings> options)
             new Claim("id", user.Id.ToString()),
             new Claim("username", user.Username),
             new Claim("email", user.Email),
-            new Claim("role", user.Role),
+            new Claim("role", user.Role!),
         };
         var jwtToken = new JwtSecurityToken(
             expires: DateTime.UtcNow.Add(options.Value.Expires),
             claims: claims,
             signingCredentials: 
             new SigningCredentials(
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SecurityKey)),
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SecurityKey!)),
                 SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(jwtToken);
