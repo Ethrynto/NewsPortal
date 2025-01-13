@@ -21,12 +21,14 @@ public class MediafilesService(IMediafilesRepository mediafilesRepository, IWebH
         return mediafile ?? throw new NotFoundException();
     }
 
-    public async Task<Mediafile> AddAsync(IFormFile file)
+    public async Task<Mediafile> AddAsync(IFormFile? file)
     {
         if (environment == null)
         {
             throw new InvalidOperationException("Environment is not initialized.");
         }
+        if(file == null)
+            throw new ArgumentNullException(nameof(file));
 
         Guid id = Guid.NewGuid();
         string fileName = $"{id}{Path.GetExtension(file.FileName)}";
