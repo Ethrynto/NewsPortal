@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
 using API.Controllers;
+using Microsoft.Extensions.Logging;
 using Assert = Xunit.Assert;
 
 namespace Tests
@@ -15,12 +16,13 @@ namespace Tests
     public class MediafilesControllerTests
     {
         private readonly Mock<IMediafilesService> _mockService;
+        private readonly Mock<ILogger<MediafilesController>> _mockLogger;
         private readonly MediafilesController _controller;
 
         public MediafilesControllerTests()
         {
             _mockService = new Mock<IMediafilesService>();
-            _controller = new MediafilesController(_mockService.Object);
+            _controller = new MediafilesController(_mockService.Object, _mockLogger!.Object);
         }
 
         [Fact]
