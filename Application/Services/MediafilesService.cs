@@ -70,8 +70,25 @@ public class MediafilesService(IMediafilesRepository mediafilesRepository, IWebH
 
     public async Task DeleteAsync(Guid id)
     {
+        var mediafile = await mediafilesRepository.GetByIdAsync(id);
+        if (mediafile == null)
+        {
+            throw new FileNotFoundException("File not found in the database.");
+        }
+
+        string filePath = Path.Combine(environment.WebRootPath, "uploads", mediafile.FileName!);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+        else
+        {
+            Console.WriteLine($"File not found by the path: {filePath}");
+        }
+
         await mediafilesRepository.DeleteAsync(id);
     }
+
     
     private string GetFileUrl(string fileName)
     {
