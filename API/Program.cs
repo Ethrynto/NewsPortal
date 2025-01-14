@@ -25,6 +25,9 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddScoped<IMediafilesRepository, MediafilesRepository>();
 builder.Services.AddScoped<IMediafilesService, MediafilesService>();
 
+builder.Services.AddScoped<IPostsRepository, PostsRepository>();
+builder.Services.AddScoped<IPostsService, PostsService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
