@@ -11,8 +11,6 @@ namespace API.Controllers;
 public class AuthController(IAuthService authService, ILogger<AuthController> logger)
     : ControllerBase
 {
-    private readonly ILogger<AuthController> _logger = logger;
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
@@ -25,12 +23,12 @@ public class AuthController(IAuthService authService, ILogger<AuthController> lo
         try
         {
             await authService.Register(request.Username, request.Email, request.Password);
-            _logger.LogInformation("The user {Username} successfully registered", request.Username);
+            logger.LogInformation("The user {Username} successfully registered", request.Username);
             return Ok(await authService.Login(request.Username, request.Password));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The error by user registration {Username}", request.Username); 
+            logger.LogError(ex, "The error by user registration {Username}", request.Username); 
             return StatusCode(500, "Server include errors.");
         }
     }
