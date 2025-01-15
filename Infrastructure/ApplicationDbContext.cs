@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure;
 
@@ -14,7 +15,6 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
