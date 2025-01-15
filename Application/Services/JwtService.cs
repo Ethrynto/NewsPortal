@@ -28,4 +28,13 @@ public class JwtService(IOptions<AuthSettings> options)
 
         return new JwtSecurityTokenHandler().WriteToken(jwtToken);
     }
+
+    public Dictionary<string, string> Decode(string jwtToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(options.Value.SecurityKey!);
+        var token = tokenHandler.ReadJwtToken(jwtToken);
+        var claims = token.Claims.ToDictionary(c => c.Type, c => c.Value);
+        return claims;
+    }
 }
