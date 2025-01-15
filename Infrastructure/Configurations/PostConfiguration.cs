@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Configurations;
 
@@ -25,6 +26,13 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.HasOne<Category>(e => e.Category)
             .WithMany(e => e.Posts)
             .HasForeignKey(e => e.CategoryId);
+        
+        var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+            v => v.ToUniversalTime(),
+            v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+        builder.Property(c => c.CreatedAt)
+            .HasConversion(dateTimeConverter);
 
     }
     
