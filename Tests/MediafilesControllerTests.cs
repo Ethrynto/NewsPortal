@@ -22,7 +22,8 @@ namespace Tests
         public MediafilesControllerTests()
         {
             _mockService = new Mock<IMediafilesService>();
-            _controller = new MediafilesController(_mockService.Object, _mockLogger!.Object);
+            _mockLogger = new Mock<ILogger<MediafilesController>>();
+            _controller = new MediafilesController(_mockService.Object, _mockLogger.Object);
         }
 
         [Fact]
@@ -110,7 +111,6 @@ namespace Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnValue = Assert.IsType<Mediafile>(okResult.Value);
         }
-
 
         [Fact]
         public async Task PutImage_ReturnsBadRequest_ForMismatchedId()
