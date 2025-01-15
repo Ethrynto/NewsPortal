@@ -28,6 +28,9 @@ builder.Services.AddScoped<IMediafilesService, MediafilesService>();
 builder.Services.AddScoped<IPostsRepository, PostsRepository>();
 builder.Services.AddScoped<IPostsService, PostsService>();
 
+builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+builder.Services.AddScoped<ICommentsService, CommentsService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
