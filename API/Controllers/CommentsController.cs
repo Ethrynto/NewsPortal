@@ -1,6 +1,7 @@
 using API.Contracts;
 using Application.Services;
 using Domain.Abstractions.Services;
+using Domain.Exceptions;
 using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -48,5 +49,29 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
             CreatedAt = DateTime.UtcNow,
         };
         return await commentsService.CreateAsync(comment);
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<ActionResult<Comment>> DeleteComment(Guid id)
+    {
+        var token = Request.Headers["Authorization"].ToString();
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            return Unauthorized("No token provided");
+        }
+        string bearerToken = token.StartsWith("Bearer ") ? token.Substring(7) : token;
+        Dictionary<string, string> userData = jwtService.Decode(bearerToken);
+        if (!userData.ContainsKey("id")) return Unauthorized();
+        
+        Comment comment = await commentsService.GetByIdAsync(id);
+        
+        Guid userId = userData.TryGetValue("id", out var value) ? Guid.Parse(value) : Guid.Empty;
+        if (comment.UserId != userId)
+            throw new NotFoundException();
+        
+        await commentsService.DeleteAsync(id);
+        return Ok();
     }
 }
