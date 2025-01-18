@@ -1,6 +1,7 @@
 using API.Contracts;
 using Domain.Abstractions.Services;
 using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -16,12 +17,6 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.GetAllAsync());
     }
 
-    // public async Task<IActionResult> GetPostsAsync(int page, int pageSize)
-    // {
-    //     logger.LogInformation("Get all posts");
-    //     return Ok(await postsService.GetAllAsync());
-    // }
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPostAsync(Guid id)
     {
@@ -30,6 +25,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostRequest request)
     {
         logger.LogInformation("Create post");
@@ -45,6 +41,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
     }
 
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdatePostAsync([FromQuery] Guid id, [FromBody] UpdatePostRequest request)
     {
         Post post = await postsService.GetByIdAsync(id);
@@ -56,6 +53,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeletePostAsync([FromQuery] Guid id)
     {
         await postsService.DeleteAsync(id);
