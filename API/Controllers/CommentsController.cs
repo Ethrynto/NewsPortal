@@ -50,8 +50,9 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
         };
         return await commentsService.CreateAsync(comment);
     }
+    
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
     public async Task<ActionResult<Comment>> DeleteComment(Guid id)
     {
