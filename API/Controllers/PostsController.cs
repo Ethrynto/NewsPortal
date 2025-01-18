@@ -44,19 +44,19 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.CreateAsync(post));
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdatePostAsync([FromBody] UpdatePostRequest request)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdatePostAsync([FromQuery] Guid id, [FromBody] UpdatePostRequest request)
     {
-        Post post = await postsService.GetByIdAsync(request.Id);
+        Post post = await postsService.GetByIdAsync(id);
         if(request.Title != String.Empty) post.Title = request.Title;
         if(request.Content != String.Empty) post.Content = request.Content;
         post.UpdatedAt = DateTime.UtcNow;
-        logger.LogInformation("Update post by id {id}", post.Id);
+        logger.LogInformation("Update post by id {id}", id);
         return Ok(await postsService.UpdateAsync(post));
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePostAsync(Guid id)
+    public async Task<IActionResult> DeletePostAsync([FromQuery] Guid id)
     {
         await postsService.DeleteAsync(id);
         logger.LogInformation("Delete post by id {id}", id);
