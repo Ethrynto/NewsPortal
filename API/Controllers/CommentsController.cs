@@ -27,7 +27,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
 
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<Comment>> PostComment(CreateCommentRequest request)
+    public async Task<ActionResult<Comment>> PostComment([FromBody] CreateCommentRequest request)
     {
         var token = Request.Headers["Authorization"].ToString();
 
@@ -53,7 +53,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
 
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<ActionResult<Comment>> PutComment(Guid id, UpdateCommentRequest request)
+    public async Task<ActionResult<Comment>> PutComment([FromQuery] Guid id, [FromBody] UpdateCommentRequest request)
     {
         Comment comment = await commentsService.GetByIdAsync(id);
         if (request.Content != string.Empty) comment.Content = request.Content;
@@ -64,7 +64,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
 
     [HttpDelete("{id}")]
     [Authorize]
-    public async Task<ActionResult<Comment>> DeleteComment(Guid id)
+    public async Task<ActionResult<Comment>> DeleteComment([FromQuery] Guid id)
     {
         var token = Request.Headers["Authorization"].ToString();
 
