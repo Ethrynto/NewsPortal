@@ -50,6 +50,16 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
         };
         return await commentsService.CreateAsync(comment);
     }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Comment>> PutComment(Guid id, UpdateCommentRequest request)
+    {
+        Comment comment = await commentsService.GetByIdAsync(id);
+        if (request.Content != string.Empty) comment.Content = request.Content;
+        logger.LogInformation($"Comment {comment.Id} has been updated");
+        return Ok(await commentsService.UpdateAsync(comment));
+    }
     
 
     [HttpDelete("{id}")]
