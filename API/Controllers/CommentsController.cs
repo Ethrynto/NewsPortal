@@ -29,7 +29,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
     [Authorize]
     public async Task<ActionResult<Comment>> PostComment([FromBody] CreateCommentRequest request)
     {
-        var token = Request.Headers["Authorization"].ToString();
+        string token = Request.Headers["Authorization"].ToString();
 
         if (string.IsNullOrWhiteSpace(token))
         {
