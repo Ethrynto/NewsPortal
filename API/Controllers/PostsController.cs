@@ -10,6 +10,7 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class PostsController(IPostsService postsService, ILogger<PostsController> logger) : ControllerBase
 {
+    // GET: api/posts
     [HttpGet]
     public async Task<IActionResult> GetPostsAsync()
     {
@@ -17,6 +18,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.GetAllAsync());
     }
 
+    // GET: api/posts/{id}
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPostAsync(Guid id)
     {
@@ -24,6 +26,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.GetByIdAsync(id));
     }
 
+    // POST: api/posts
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostRequest request)
@@ -40,6 +43,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.CreateAsync(post));
     }
 
+    // PUT: api/posts/{id}
     [HttpPut("{id}")]
     [Authorize]
     public async Task<IActionResult> UpdatePostAsync([FromQuery] Guid id, [FromBody] UpdatePostRequest request)
@@ -52,6 +56,7 @@ public class PostsController(IPostsService postsService, ILogger<PostsController
         return Ok(await postsService.UpdateAsync(post));
     }
 
+    // DELETE: api/posts/{id}
     [HttpDelete("{id}")]
     [Authorize]
     public async Task<IActionResult> DeletePostAsync([FromQuery] Guid id)

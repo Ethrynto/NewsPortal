@@ -11,12 +11,14 @@ namespace API.Controllers;
 public class AuthController(IAuthService authService, ILogger<AuthController> logger)
     : ControllerBase
 {
+    // POST: api/auth/login
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
         return Ok(await authService.Login(request.Username, request.Password));
     }
 
+    // POST: api/auth/register
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
     {

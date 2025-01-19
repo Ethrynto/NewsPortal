@@ -13,18 +13,21 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class CommentsController(ICommentsService commentsService, JwtService jwtService, ILogger<CommentsController> logger) : ControllerBase
 {
+    // GET: api/comments
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Comment>>> GetComments()
     {
         return Ok(await commentsService.GetAllAsync());
     }
 
+    // GET: api/comments/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Comment>> GetComment(Guid id)
     {
         return Ok(await commentsService.GetByIdAsync(id));
     }
 
+    // POST: api/comments
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<Comment>> PostComment([FromBody] CreateCommentRequest request)
@@ -51,6 +54,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
         return await commentsService.CreateAsync(comment);
     }
 
+    // PUT: api/comments/{id}
     [HttpPut("{id}")]
     [Authorize]
     public async Task<ActionResult<Comment>> PutComment([FromQuery] Guid id, [FromBody] UpdateCommentRequest request)
@@ -61,7 +65,7 @@ public class CommentsController(ICommentsService commentsService, JwtService jwt
         return Ok(await commentsService.UpdateAsync(comment));
     }
     
-
+    // DELETE: api/comments/{id}
     [HttpDelete("{id}")]
     [Authorize]
     public async Task<ActionResult<Comment>> DeleteComment([FromQuery] Guid id)
